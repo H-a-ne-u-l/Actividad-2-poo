@@ -1,18 +1,10 @@
 class Persona:
-    
-    def __init__(
-        self,
-        nombre: str,
-        apellidos: str,
-        numero_documento_identidad: str,
-        año_nacimiento: int,
-        pais_nacimiento: str,
-        genero: str,
-    ):
+
+    def __init__(self, nombre, apellidos, numero_documento_identidad, ano_nacimiento, pais_nacimiento, genero):
         self.nombre = nombre
         self.apellidos = apellidos
         self.numero_documento_identidad = numero_documento_identidad
-        self.año_nacimiento = año_nacimiento
+        self.ano_nacimiento = ano_nacimiento
         self.pais_nacimiento = pais_nacimiento
         self.genero = genero
 
@@ -20,11 +12,10 @@ class Persona:
         print(f"Nombre = {self.nombre}")
         print(f"Apellidos = {self.apellidos}")
         print(f"Número de documento de identidad = {self.numero_documento_identidad}")
-        print(f"Año de nacimiento = {self.año_nacimiento}")
+        print(f"Año de nacimiento = {self.ano_nacimiento}")
         print(f"País de nacimiento = {self.pais_nacimiento}")
         print(f"Género = {self.genero}")
         print()
-
 
 def main():
     p1 = Persona("Pedro", "Pérez", "1053121010", 1998, "Colombia", "H")
@@ -32,7 +23,6 @@ def main():
 
     p1.imprimir()
     p2.imprimir()
-
 
 if __name__ == "__main__":
     main()
