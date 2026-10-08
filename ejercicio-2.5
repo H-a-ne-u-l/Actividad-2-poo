@@ -1,0 +1,92 @@
+from enum import Enum
+
+class TipoCuenta(Enum):
+    AHORROS = "AHORROS"
+    CORRIENTE = "CORRIENTE"
+
+
+class CuentaBancaria:
+    def __init__(self, nombres_titular, apellidos_titular, numero_cuenta, tipo_cuenta, porcentaje_interes_mensual=0.0):
+        self.nombres_titular = nombres_titular
+        self.apellidos_titular = apellidos_titular
+        self.numero_cuenta = numero_cuenta
+        self.tipo_cuenta = tipo_cuenta
+        self.saldo = 0.0
+        self.porcentaje_interes_mensual = porcentaje_interes_mensual
+
+    def imprimir(self):
+        tipo_val = self.tipo_cuenta.value if isinstance(self.tipo_cuenta, TipoCuenta) else self.tipo_cuenta
+        print(f"Nombres del titular = {self.nombres_titular}")
+        print(f"Apellidos del titular = {self.apellidos_titular}")
+        print(f"Número de cuenta = {self.numero_cuenta}")
+        print(f"Tipo de cuenta = {tipo_val}")
+        print(f"Saldo = {self.saldo}")
+        print(f"Porcentaje interés mensual = {self.porcentaje_interes_mensual}%")
+
+    def consultar_saldo(self):
+        print(f"El saldo actual es = {self.saldo}")
+
+    def consignar(self, valor):
+        if valor > 0:
+            self.saldo += valor
+            print(f"Se ha consignado ${valor} en la cuenta. El nuevo saldo es ${self.saldo}")
+            return True
+        else:
+            print("El valor a consignar debe ser mayor que cero.")
+            return False
+
+    def retirar(self, valor):
+        if 0 < valor <= self.saldo:
+            self.saldo -= valor
+            print(f"Se ha retirado ${valor} de la cuenta. El nuevo saldo es ${self.saldo}")
+            return True
+        else:
+            print("El valor a retirar debe ser menor o igual al saldo actual.")
+            return False
+
+    def comparar_cuentas(self, otra_cuenta):
+        if self.saldo >= otra_cuenta.saldo:
+            print(f"La cuenta N° {self.numero_cuenta} tiene un saldo mayor o igual que la cuenta N° {otra_cuenta.numero_cuenta}.")
+        else:
+            print(f"La cuenta N° {self.numero_cuenta} tiene un saldo menor que la cuenta N° {otra_cuenta.numero_cuenta}.")
+
+    def transferencia(self, otra_cuenta, valor):
+        if self.retirar(valor):
+            otra_cuenta.consignar(valor)
+            print(f"Transferencia de ${valor} realizada con éxito a la cuenta N° {otra_cuenta.numero_cuenta}.")
+            return True
+        else:
+            print("No se pudo realizar la transferencia.")
+            return False
+
+    def aplicar_interes_mensual(self):
+        interes = self.saldo * (self.porcentaje_interes_mensual / 100)
+        self.saldo += interes
+        print(f"Se ha aplicado un interés del {self.porcentaje_interes_mensual}%. Nuevo saldo: ${self.saldo}")
+
+
+def main():
+    cuenta1 = CuentaBancaria("Pedro", "Pérez", 123456789, TipoCuenta.AHORROS, 1.5)
+    cuenta2 = CuentaBancaria("María", "Gómez", 987654321, TipoCuenta.CORRIENTE, 2.0)
+
+    print("--- Datos de la cuenta 1 ---")
+    cuenta1.imprimir()
+    print()
+
+    cuenta1.consignar(200000)
+    cuenta1.consignar(300000)
+    cuenta1.retirar(400000)
+    cuenta1.consultar_saldo()
+    print()
+
+    print("--- Aplicación de interés mensual ---")
+    cuenta1.aplicar_interes_mensual()
+    print()
+
+    print("--- Operaciones entre dos cuentas ---")
+    cuenta2.consignar(100000)
+    cuenta1.comparar_cuentas(cuenta2)
+    cuenta1.transferencia(cuenta2, 50000)
+
+if __name__ == "__main__":
+    main()
