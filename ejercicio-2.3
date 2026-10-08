@@ -1,0 +1,203 @@
+from enum import Enum
+
+class TipoCombustible(Enum):
+    GASOLINA = "GASOLINA"
+    BIOETANOL = "BIOETANOL"
+    DIESEL = "DIESEL"
+    BIODIESEL = "BIODIESEL"
+    GAS_NATURAL = "GAS_NATURAL"
+
+
+class TipoAutomovil(Enum):
+    CIUDAD = "Carro de ciudad"
+    SUBCOMPACTO = "Subcompacto"
+    COMPACTO = "Compacto"
+    FAMILIAR = "Familiar"
+    EJECUTIVO = "Ejecutivo"
+    SUV = "SUV"
+
+
+class TipoColor(Enum):
+    BLANCO = "Blanco"
+    NEGRO = "Negro"
+    ROJO = "Rojo"
+    NARANJA = "Naranja"
+    AMARILLO = "Amarillo"
+    VERDE = "Verde"
+    AZUL = "Azul"
+    VIOLETA = "Violeta"
+
+
+class Automovil:
+    def __init__(
+        self,
+        marca: str,
+        modelo: int,
+        motor: float,
+        tipo_combustible: TipoCombustible,
+        tipo_automovil: TipoAutomovil,
+        numero_puertas: int,
+        cantidad_asientos: int,
+        velocidad_maxima: float,
+        color: TipoColor,
+        es_automatico: bool,
+        velocidad_actual: float = 0.0,
+    ):
+        
+        self.marca = marca
+        self.modelo = modelo
+        self.motor = motor
+        self.tipo_combustible = tipo_combustible
+        self.tipo_automovil = tipo_automovil
+        self.numero_puertas = numero_puertas
+        self.cantidad_asientos = cantidad_asientos
+        self.velocidad_maxima = velocidad_maxima
+        self.color = color
+        self.es_automatico = es_automatico
+        self.velocidad_actual = velocidad_actual
+        self.valor_multas = 0.0  # Acumulador del valor total de multas
+
+    def get_marca(self) -> str:
+        return self.marca
+
+    def get_modelo(self) -> int:
+        return self.modelo
+
+    def get_motor(self) -> float:
+        return self.motor
+
+    def get_tipo_combustible(self) -> TipoCombustible:
+        return self.tipo_combustible
+
+    def get_tipo_automovil(self) -> TipoAutomovil:
+        return self.tipo_automovil
+
+    def get_numero_puertas(self) -> int:
+        return self.numero_puertas
+
+    def get_cantidad_asientos(self) -> int:
+        return self.cantidad_asientos
+
+    def get_velocidad_maxima(self) -> float:
+        return self.velocidad_maxima
+
+    def get_color(self) -> TipoColor:
+        return self.color
+
+    def get_es_automatico(self) -> bool:
+        return self.es_automatico
+
+    def get_velocidad_actual(self) -> float:
+        return self.velocidad_actual
+
+
+    def set_marca(self, marca: str):
+        self.marca = marca
+
+    def set_modelo(self, modelo: int):
+        self.modelo = modelo
+
+    def set_motor(self, motor: float):
+        self.motor = motor
+
+    def set_tipo_combustible(self, tipo_combustible: TipoCombustible):
+        self.tipo_combustible = tipo_combustible
+
+    def set_tipo_automovil(self, tipo_automovil: TipoAutomovil):
+        self.tipo_automovil = tipo_automovil
+
+    def set_numero_puertas(self, numero_puertas: int):
+        self.numero_puertas = numero_puertas
+
+    def set_cantidad_asientos(self, cantidad_asientos: int):
+        self.cantidad_asientos = cantidad_asientos
+
+    def set_velocidad_maxima(self, velocidad_maxima: float):
+        self.velocidad_maxima = velocidad_maxima
+
+    def set_color(self, color: TipoColor):
+        self.color = color
+
+    def set_es_automatico(self, es_automatico: bool):
+        self.es_automatico = es_automatico
+
+    def set_velocidad_actual(self, velocidad_actual: float):
+        self.velocidad_actual = velocidad_actual
+
+    
+    def acelerar(self, incremento_velocidad: float):
+        if (self.velocidad_actual + incremento_velocidad <= self.velocidad_maxima):
+            self.velocidad_actual += incremento_velocidad
+        else:
+            VALOR_MULTA = 100.0
+            self.valor_multas += VALOR_MULTA
+            print(f"¡Infracción! Se sobrepasó la velocidad máxima permitida ({self.velocidad_maxima} km/h).")
+            print(f"Se ha aplicado una multa de ${VALOR_MULTA}.")
+
+    def desacelerar(self, decremento_velocidad: float):
+        if self.velocidad_actual - decremento_velocidad >= 0:
+            self.velocidad_actual -= decremento_velocidad
+        else:
+            print("No se puede decrementar a una velocidad negativa.")
+
+    def frenar(self):
+        self.velocidad_actual = 0.0
+
+    def calcular_tiempo_llegada(self, distancia: float) -> float:
+        if self.velocidad_actual == 0:
+            return 0.0
+        return distancia / self.velocidad_actual
+
+    def tiene_multas(self) -> bool:
+        return self.valor_multas > 0
+
+    def get_valor_total_multas(self) -> float:
+        return self.valor_multas
+
+    def imprimir(self):
+        print(f"Marca = {self.marca}")
+        print(f"Modelo = {self.modelo}")
+        print(f"Motor = {self.motor}")
+        print(f"Tipo de combustible = {self.tipo_combustible.value}")
+        print(f"Tipo de automóvil = {self.tipo_automovil.value}")
+        print(f"Número de puertas = {self.numero_puertas}")
+        print(f"Cantidad de asientos = {self.cantidad_asientos}")
+        print(f"Velocidad máxima = {self.velocidad_maxima}")
+        print(f"Color = {self.color.value}")
+        print(f"Es automático = {self.es_automatico}")
+        print(f"Tiene multas = {self.tiene_multas()}")
+        print(f"Valor total de multas = ${self.get_valor_total_multas()}")
+        print()
+
+
+def main():
+    auto1 = Automovil(
+        "Ford",
+        2018,
+        3.0,
+        TipoCombustible.DIESEL,
+        TipoAutomovil.EJECUTIVO,
+        5,
+        6,
+        250.0,
+        TipoColor.NEGRO,
+        True,  # es_automatico
+    )
+
+    auto1.imprimir()
+
+    auto1.set_velocidad_actual(100)
+    print(f"Velocidad actual = {auto1.get_velocidad_actual()}")
+
+    auto1.acelerar(20)
+    print(f"Velocidad actual = {auto1.get_velocidad_actual()}")
+
+    # Intentar superar la velocidad máxima (250 km/h) para probar la multa
+    auto1.acelerar(200)
+
+    print(f"¿Tiene multas?: {auto1.tiene_multas()}")
+    print(f"Total a pagar en multas: ${auto1.get_valor_total_multas()}")
+
+
+if __name__ == "__main__":
+    main()
